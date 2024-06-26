@@ -112,3 +112,16 @@
   justify-content: center;
   align-items: center;
 }
+
+/* CSS in your page.module.css */
+.scannerContainer {
+  width: 100%;  /* Set the width of the scanner */
+  height: 100%; /* Set the height of the scanner */
+  position: relative; /* Ensures proper positioning inside a parent */
+  border: 1px solid #ccc; /* Optional: Adds a border around the scanner area */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensures no overflow of content outside the boundaries */
+  margin-bottom: 10px;
+}

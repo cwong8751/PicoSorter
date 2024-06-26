@@ -5,14 +5,23 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node ./src/scanserver/server.js",
     "lint": "next lint"
   },
   "dependencies": {
+    "@zxing/library": "^0.21.1",
+    "client": "^0.0.1",
+    "express": "^4.19.2",
     "next": "14.2.4",
+    "qrcode": "^1.5.3",
+    "qrcode.react": "^3.1.0",
     "react": "^18",
     "react-barcode": "^1.5.3",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
+    "websockets": "^0.2.0",
+    "ws": "^8.17.1"
   },
   "devDependencies": {
     "eslint": "^8",
