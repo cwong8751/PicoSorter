@@ -17,7 +17,7 @@ export default function Home() {
         <main className={styles.main}>
           <h1 className={styles.heading1}>Welcome to picosorter</h1>
           <h3 className={styles.heading3}>Picosorter is an input/output management system.</h3>
-          <div style={{ display: 'flex' }}>
+          <div style={{ display: 'inline-block' }}>
             <button className={styles.button} style={{ marginRight: '10px' }} onClick={handleLoginClick}>
               Login
             </button>
