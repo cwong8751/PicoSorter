@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node ./src/scanserver/server.js",
+    "start": "node ./src/scanserver/server.js && node ./src/database/routes.js",
     "lint": "next lint"
   },
   "dependencies": {
     "@zxing/library": "^0.21.1",
+    "bcryptjs": "^2.4.3",
     "client": "^0.0.1",
     "express": "^4.19.2",
     "next": "14.2.4",
@@ -20,6 +21,8 @@
     "react-dom": "^18",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
+    "sqlite": "^5.0.1",
+    "sqlite3": "^5.1.6",
     "websockets": "^0.2.0",
     "ws": "^8.17.1"
   },

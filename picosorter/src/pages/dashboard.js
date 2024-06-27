@@ -19,6 +19,15 @@ export default function Dashboard(ipAddress) {
     };
 
     useEffect(() => {
+        // check if user is logged in using localStorage
+        const user = localStorage.getItem('user');
+
+        // direct to login page if user is not logged in
+        if(!user){
+            window.location.href = '/login';
+        }
+
+        // set up server url 
         if (ipAddress) {
             console.log(ipAddress.ipAddress);
             setServerUrl(`ws://${ipAddress.ipAddress}:3000`);
@@ -28,6 +37,7 @@ export default function Dashboard(ipAddress) {
         // set up internal server connection 
         const socket = io(serverUrl);
 
+        // socket listeners
         socket.on('connect', () => {        
             console.log('Internal connected to server'); 
         });
