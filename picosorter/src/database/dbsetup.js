@@ -16,6 +16,8 @@ db.serialize(() => {
       username TEXT,
       password PASSWORD
     )`);
+
+    db.run(`INSERT INTO users (username, password) VALUES ('admin', 'admin')`);
 });
 
 // close connexion to db 

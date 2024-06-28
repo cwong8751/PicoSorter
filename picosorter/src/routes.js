@@ -13,7 +13,14 @@ app.prepare().then(() => {
   server.use(cors());
   server.use(bodyParser.json());
 
-  const db = new sqlite3.Database('./database/picosorter.db');
+  // connect to db
+  const db = new sqlite3.Database('/Users/carl/Documents/GitHub/PicoSorter/picosorter/src/database/picosorter.db', (err) => {
+    if (err) {
+      console.error('Error opening database:', err.message);
+    } else {
+      console.log('Connected to the SQLite database.');
+    }
+  });
 
   // Example route to get all users
   server.get('/api/users', (req, res) => {

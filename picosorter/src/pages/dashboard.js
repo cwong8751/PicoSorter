@@ -1,14 +1,18 @@
-// pages/login.js
 import Head from 'next/head';
 import styles from '../css/page.module.css';
 import { useState, useEffect } from 'react';
 import MyBarcode from '../components/barcode';
 import QRCodeComponent from '../scanserver/qrcode';
 import io from 'socket.io-client';
+import Collapsible from 'react-collapsible';
+import { MdOutlineSearch } from "react-icons/md";
 
-export default function Dashboard(ipAddress) {
+export default function Dashboard({ ipAddress }) {
     const [barcodeValue, setBarcodeValue] = useState('00000000');
     const [serverUrl, setServerUrl] = useState('');
+    const [isClient, setIsClient] = useState(false);
+    const [searchterm, setSearchterm] = useState('');
+    const [user, setUser] = useState(''); 
 
     const handleGenerateClick = () => {
         setBarcodeValue(Math.floor(Math.random() * 100000000).toString());
@@ -18,28 +22,41 @@ export default function Dashboard(ipAddress) {
         // Print logic here
     };
 
+    const handleLogoutClick = () => {  
+        localStorage.removeItem('user');
+        console.log('User logged out');
+        window.location.href = '/login';
+    };
+
     useEffect(() => {
-        // check if user is logged in using localStorage
+        setIsClient(true); // We are on the client now
+
+        // Check if user is logged in using localStorage
+        //TODO: get rid of the password field in the user variable 
         const user = localStorage.getItem('user');
 
-        // direct to login page if user is not logged in
-        if(!user){
+        console.log('User:', user);
+
+        // Redirect to login page if user is not logged in
+        if (!user) {
             window.location.href = '/login';
         }
 
-        // set up server url 
+        // Set user variable
+        setUser(JSON.parse(user).username);
+
+        // Set up server URL
         if (ipAddress) {
-            console.log(ipAddress.ipAddress);
-            setServerUrl(`ws://${ipAddress.ipAddress}:3000`);
+            console.log(ipAddress);
+            setServerUrl(`ws://${ipAddress}:3000`);
         }
 
-
-        // set up internal server connection 
+        // Set up internal server connection
         const socket = io(serverUrl);
 
-        // socket listeners
-        socket.on('connect', () => {        
-            console.log('Internal connected to server'); 
+        // Socket listeners
+        socket.on('connect', () => {
+            console.log('Internal connected to server');
         });
 
         socket.on('barcode', (barcode) => {
@@ -58,35 +75,87 @@ export default function Dashboard(ipAddress) {
                 <title>Dashboard - picosorter</title>
             </Head>
             <main className={styles.main}>
+                <div style={{display: 'inline-flex', flexDirection: 'row'}}>
+                    <p style={{marginRight: '10px'}} >Welcome, {user}</p>
+                    <button className={styles.button} onClick={handleLogoutClick}>Log out</button>
+                </div>
                 <h1 className={styles.heading1}>Welcome to the dashboard</h1>
                 <div className={styles.dashboard}>
                     <div className={styles.left}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <h3 className={styles.heading3}>Input management</h3>
-                            <div style={{ marginBottom: 10 }}>
-                                <b>Connect to scanner</b>
-                                <QRCodeComponent serverUrl={serverUrl} />
-                            </div>
+                            {isClient && (
+                                <Collapsible trigger="Connect to server" style={{ marginBottom: 10, color: 'blue' }}>
+                                    <QRCodeComponent serverUrl={serverUrl} />
+                                </Collapsible>
+                            )}
                             <form>
                                 <div className={styles.formGroup}>
-                                    <input type="text" id="barcode" name="barcode" value={barcodeValue} onChange={e => setBarcodeValue(e.target.value)} placeholder='Barcode number' required className={styles.input} />
+                                    <input
+                                        type="text"
+                                        id="barcode"
+                                        name="barcode"
+                                        value={barcodeValue}
+                                        onChange={e => setBarcodeValue(e.target.value)}
+                                        placeholder='Barcode number'
+                                        required
+                                        className={styles.input}
+                                    />
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <input type="file" id="photo" name="photo" accept="image/*" required className={styles.input} />
+                                    <input
+                                        type="file"
+                                        id="photo"
+                                        name="photo"
+                                        accept="image/*"
+                                        required
+                                        className={styles.input}
+                                    />
                                 </div>
                                 <button type="submit" className={styles.button}>Submit</button>
                             </form>
                             <h3 className={styles.heading3}>Barcode tools</h3>
-                            <div style={{ alignContent: 'center' }}><MyBarcode value={barcodeValue} /></div>
+                            <div style={{ alignContent: 'center' }}>
+                                <MyBarcode value={barcodeValue} />
+                            </div>
                             <b>Barcode info: {barcodeValue}</b>
-                            <button className={styles.button} style={{ marginBottom: '5px' }} onClick={handleGenerateClick}>
+                            <button
+                                className={styles.button}
+                                style={{ marginBottom: '5px' }}
+                                onClick={handleGenerateClick}
+                            >
                                 Generate new one
                             </button>
-                            <button className={styles.button} onClick={handlePrintClick}>Print</button>
+                            <button className={styles.button} onClick={handlePrintClick}>
+                                Print
+                            </button>
                         </div>
                     </div>
+                    <div className={styles.vertical_hr}></div>
                     <div className={styles.right}>
+                        <h3 className={styles.heading3}>Search</h3>
+                        <form>
+                            <div style={{ display: 'block' }} className={styles.formGroup}>
+                                <label style={{ textAlign: 'center' }} htmlFor="searchterm">Look for any item using barcode number or product info</label>
+                                <div style={{ display: 'inline-flex' }}>
+                                    <input
+                                        style={{ marginRight: '10px' }}
+                                        type="text"
+                                        id="searchterm"
+                                        name="searchterm"
+                                        value={searchterm}
+                                        onChange={e => setSearchterm(e.target.value)}
+                                        placeholder='Search...'
+                                        required
+                                        className={styles.input}
+                                    />
+                                    <button type="submit" className={styles.button}><MdOutlineSearch /></button>
+                                </div>
+                            </div>
+                        </form>
+
                         <h3 className={styles.heading3}>Output management</h3>
+                        <div style={{ background: 'aqua' }}>Output management placeholder</div>
                     </div>
                 </div>
                 <div className={styles.bottom}>
@@ -99,7 +168,6 @@ export default function Dashboard(ipAddress) {
 
 // to get ip address of the server computer in the local network.
 export async function getServerSideProps(context) {
-    const { req } = context;
     const os = require('os');
     const networkInterfaces = os.networkInterfaces();
     let ipAddress = '';
