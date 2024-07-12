@@ -182,3 +182,19 @@
   max-width: 100px;
   border-radius: 5px;
 }
+
+.input {
+  width: 60px; /* Adjust the width as needed */
+  padding: 5px;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px; /* Adjust the font size as needed */
+  text-align: center;
+}
+
+.input:focus {
+  outline: none;
+  border-color: green;
+  box-shadow: 0 0 8px darkgreen;
+}

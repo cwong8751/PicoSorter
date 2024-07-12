@@ -101,7 +101,12 @@ export default function Inventory() {
                                     <td>{item.price}</td>
                                     <td>{item.sale ? 'Yes' : 'No'}</td>
                                     <td>{item.description}</td>
-                                    <td>{item.quantity}</td>
+                                    <td><input
+                                        type="number"
+                                        value={item.quantity}
+                                        min="0"
+                                        className={styles.input}
+                                    /></td>
                                     <td><img src={blobToUrl(item.image)} alt={item.name} width="100" /></td>
                                     <td><button className={styles.buttonDelete} onClick={handleDelete(item.id)}>Delete</button></td>
                                 </tr>
