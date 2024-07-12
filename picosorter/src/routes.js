@@ -62,6 +62,17 @@ app.prepare().then(() => {
     });
   });
 
+  // fetch all inventory items
+  server.get('/api/inventory', (req, res) => {
+    db.all('SELECT * FROM inventory', [], (err, rows) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ inventory: rows });
+    });
+  });
+
   // Default next.js request handler
   server.all('*', (req, res) => {
     return handle(req, res);

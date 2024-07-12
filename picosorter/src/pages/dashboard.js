@@ -6,13 +6,14 @@ import QRCodeComponent from '../scanserver/qrcode';
 import io from 'socket.io-client';
 import Collapsible from 'react-collapsible';
 import { MdOutlineSearch } from "react-icons/md";
+import verifyUser from '../utils/utils';
 
 export default function Dashboard({ ipAddress }) {
     const [barcodeValue, setBarcodeValue] = useState('00000000');
     const [serverUrl, setServerUrl] = useState('');
     const [isClient, setIsClient] = useState(false);
     const [searchterm, setSearchterm] = useState('');
-    const [user, setUser] = useState(''); 
+    const [user, setUser] = useState('');
 
     const handleGenerateClick = () => {
         setBarcodeValue(Math.floor(Math.random() * 100000000).toString());
@@ -22,7 +23,8 @@ export default function Dashboard({ ipAddress }) {
         // Print logic here
     };
 
-    const handleLogoutClick = () => {  
+    // handles log out
+    const handleLogoutClick = () => {
         localStorage.removeItem('user');
         console.log('User logged out');
         window.location.href = '/login';
@@ -31,19 +33,9 @@ export default function Dashboard({ ipAddress }) {
     useEffect(() => {
         setIsClient(true); // We are on the client now
 
-        // Check if user is logged in using localStorage
-        //TODO: get rid of the password field in the user variable 
-        const user = localStorage.getItem('user');
-
-        console.log('User:', user);
-
-        // Redirect to login page if user is not logged in
-        if (!user) {
-            window.location.href = '/login';
-        }
-
-        // Set user variable
-        setUser(JSON.parse(user).username);
+        // set the username of the user
+        var userResult = JSON.parse(verifyUser());
+        setUser(userResult.username);
 
         // Set up server URL
         if (ipAddress) {
@@ -75,11 +67,11 @@ export default function Dashboard({ ipAddress }) {
                 <title>Dashboard - picosorter</title>
             </Head>
             <main className={styles.main}>
-                <div style={{display: 'inline-flex', flexDirection: 'row'}}>
-                    <p style={{marginRight: '10px'}} >Welcome, {user}</p>
+                <div style={{ display: 'inline-flex', flexDirection: 'row' }}>
+                    <p style={{ marginRight: '10px' }} >Welcome, {user}</p>
                     <button className={styles.button} onClick={handleLogoutClick}>Log out</button>
                 </div>
-                <h1 className={styles.heading1}>Welcome to the dashboard</h1>
+                <h1 className={styles.heading1}>Dashboard</h1>
                 <div className={styles.dashboard}>
                     <div className={styles.left}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
