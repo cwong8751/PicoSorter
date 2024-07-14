@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react';
 import styles from '../css/page.module.css';
 import Head from 'next/head';
 import verifyUser from '../utils/utils';
+import MenuBar from '../components/menubar';
 
 export default function Inventory() {
     const [user, setUser] = useState('');
     const [inventory, setInventory] = useState([]);
+    const [title, setTitle] = useState('');
 
     useEffect(() => {
+        // set username
+        setTitle(document.title);
 
         // set the username of the user
         var userResult = JSON.parse(verifyUser());
@@ -68,15 +72,11 @@ export default function Inventory() {
 
     return (
         <div className={styles.container}>
+            <MenuBar pageTitle={title} user={user} handleLogoutClick={handleLogoutClick} />
             <Head>
-                <title>Inventory management - picosorter</title>
+                <title>Inventory</title>
             </Head>
             <main className={styles.main}>
-                <div style={{ display: 'inline-flex', flexDirection: 'row' }}>
-                    <p style={{ marginRight: '10px' }}>Welcome, {user}</p>
-                    <button className={styles.button} onClick={handleLogoutClick}>Log out</button>
-                </div>
-                <h1 className={styles.heading1}>Inventory management</h1>
                 <div className={styles.inventory}>
                     <table className={styles.table}>
                         <thead>

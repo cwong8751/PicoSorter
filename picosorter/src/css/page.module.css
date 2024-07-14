@@ -198,3 +198,68 @@
   border-color: green;
   box-shadow: 0 0 8px darkgreen;
 }
+
+/* Top Menu Bar */
+.menuBar {
+  width: 100%;
+  background-color: #f0f0f0;
+  display: flexbox;
+  padding: 0.3rem 1rem;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.menuBar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.menuBar li {
+  margin: 0 1rem;
+}
+
+.menuBar a {
+  color: green;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  transition: background-color 0.2s, color 0.2s;
+  border-radius: 4px;
+}
+
+.menuBar a:hover {
+  background-color: green;
+  color: #fff;
+}
+
+.menuBar .active {
+  background-color: darkgreen;
+  color: #fff;
+}
+
+.menuBar .logo {
+  margin-right: auto;
+  padding-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .menuBar ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .menuBar li {
+    margin: 0.5rem 0;
+  }
+
+  .menuBar .logo {
+    padding-left: 0;
+  }
+}

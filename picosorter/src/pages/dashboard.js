@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import Collapsible from 'react-collapsible';
 import { MdOutlineSearch } from "react-icons/md";
 import verifyUser from '../utils/utils';
+import MenuBar from '../components/menubar';
 
 export default function Dashboard({ ipAddress }) {
     const [barcodeValue, setBarcodeValue] = useState('00000000');
@@ -14,6 +15,7 @@ export default function Dashboard({ ipAddress }) {
     const [isClient, setIsClient] = useState(false);
     const [searchterm, setSearchterm] = useState('');
     const [user, setUser] = useState('');
+    const [title, setTitle] = useState('');
 
     const handleGenerateClick = () => {
         setBarcodeValue(Math.floor(Math.random() * 100000000).toString());
@@ -32,6 +34,9 @@ export default function Dashboard({ ipAddress }) {
 
     useEffect(() => {
         setIsClient(true); // We are on the client now
+
+        // set page title
+        setTitle(document.title);
 
         // set the username of the user
         var userResult = JSON.parse(verifyUser());
@@ -63,15 +68,11 @@ export default function Dashboard({ ipAddress }) {
 
     return (
         <div className={styles.container}>
+            <MenuBar pageTitle={title} user={user} handleLogoutClick={handleLogoutClick} />
             <Head>
-                <title>Dashboard - picosorter</title>
+                <title>Dashboard</title>
             </Head>
             <main className={styles.main}>
-                <div style={{ display: 'inline-flex', flexDirection: 'row' }}>
-                    <p style={{ marginRight: '10px' }} >Welcome, {user}</p>
-                    <button className={styles.button} onClick={handleLogoutClick}>Log out</button>
-                </div>
-                <h1 className={styles.heading1}>Dashboard</h1>
                 <div className={styles.dashboard}>
                     <div className={styles.left}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>
