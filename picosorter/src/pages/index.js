@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import styles from '../css/page.module.css';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import verifyUser from '../utils/utils';
@@ -17,31 +16,45 @@ export default function Home() {
   }
 
   useEffect(() => {
-
-    // verify user
     var userResult = JSON.parse(verifyUser());
-    
-    // if user is already logged in, go to dashboard
     if(userResult.username){
       setIsLogin(true);
     }
-
   }, []);
 
-    return (
-      <div className={styles.container}>
-        <Head>
-          <title>picosorter</title>
-        </Head>
-        <main className={styles.main}>
-          <h1 className={styles.heading1}>Welcome to picosorter</h1>
-          <h3 className={styles.heading3}>Picosorter is an input/output management system.</h3>
-          <div style={{ display: 'inline-flex' }}>
-            {isLogin ? <button className={styles.button} onClick={handleDashboardClick}>Dashboard</button> : <button className={styles.button} onClick={handleLoginClick}>Log in</button>}
-            <div style={{ width: 10 }}></div>
-            <button className={styles.button} disabled>Pair with simplescanner</button>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+      <Head>
+        <title>picosorter</title>
+      </Head>
+      <main className="flex flex-col items-center">
+        <h1 className="text-4xl font-bold mb-4 text-gray-800">Welcome to picosorter</h1>
+        <h3 className="text-xl font-medium mb-8 text-gray-600">Picosorter is an input/output management system.</h3>
+        <div className="inline-flex">
+          {isLogin ? (
+            <button
+              className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              onClick={handleDashboardClick}
+            >
+              Dashboard
+            </button>
+          ) : (
+            <button
+              className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+              onClick={handleLoginClick}
+            >
+              Log in
+            </button>
+          )}
+          <div className="w-2"></div>
+          <button
+            className="px-6 py-2 bg-gray-400 text-white rounded cursor-not-allowed"
+            disabled
+          >
+            Pair with simplescanner
+          </button>
+        </div>
+      </main>
+    </div>
+  );
+}

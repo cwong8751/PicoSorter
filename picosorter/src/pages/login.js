@@ -1,7 +1,5 @@
 // pages/login.js
 import Head from 'next/head';
-import styles from '../css/page.module.css';
-import { hashPassword } from '../utils/password.js';
 
 export default function Login() {
 
@@ -12,9 +10,6 @@ export default function Login() {
         // get user and password 
         const username = e.target.username.value;
         const password = e.target.password.value;
-
-        // hash and salt password
-        //const hashedPassword = await hashPassword(password);
 
         // authenticate user
         const response = await fetch('http://localhost:3030/api/auth/login', {
@@ -45,20 +40,39 @@ export default function Login() {
     };
 
     return (
-        <div className={styles.container}>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
             <Head>
                 <title>Login - picosorter</title>
             </Head>
-            <main className={styles.main}>
-                <h1 className={styles.heading1}>Login to picosorter</h1>
-                <form className={styles.form} onSubmit={handleLogin}>
-                    <div className={styles.formGroup}>
-                        <input type="text" id="username" name="username" placeholder='Username' required className={styles.input} />
+            <main className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+                <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Login to picosorter</h1>
+                <form className="space-y-6" onSubmit={handleLogin}>
+                    <div>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Username"
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                     </div>
-                    <div className={styles.formGroup}>
-                        <input type="password" id="password" name="password" placeholder='Password' required className={styles.input} />
+                    <div>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            required
+                            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
                     </div>
-                    <button type="submit" className={styles.button}>Login</button>
+                    <button
+                        type="submit"
+                        className="w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
+                    >
+                        Login
+                    </button>
                 </form>
             </main>
         </div>

@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import styles from '../css/page.module.css';
 import { useState, useEffect } from 'react';
 import MyBarcode from '../components/barcode';
 import QRCodeComponent from '../scanserver/qrcode';
@@ -25,7 +24,6 @@ export default function Dashboard({ ipAddress }) {
         // Print logic here
     };
 
-    // handles log out
     const handleLogoutClick = () => {
         localStorage.removeItem('user');
         console.log('User logged out');
@@ -33,25 +31,20 @@ export default function Dashboard({ ipAddress }) {
     };
 
     useEffect(() => {
-        setIsClient(true); // We are on the client now
+        setIsClient(true);
 
-        // set page title
         setTitle(document.title);
 
-        // set the username of the user
         var userResult = JSON.parse(verifyUser());
         setUser(userResult.username);
 
-        // Set up server URL
         if (ipAddress) {
             console.log(ipAddress);
             setServerUrl(`ws://${ipAddress}:3000`);
         }
 
-        // Set up internal server connection
         const socket = io(serverUrl);
 
-        // Socket listeners
         socket.on('connect', () => {
             console.log('Internal connected to server');
         });
@@ -67,23 +60,23 @@ export default function Dashboard({ ipAddress }) {
     }, [ipAddress, serverUrl]);
 
     return (
-        <div className={styles.container}>
+        <div className="min-h-screen bg-gray-100">
             <MenuBar pageTitle={title} user={user} handleLogoutClick={handleLogoutClick} />
             <Head>
                 <title>Dashboard</title>
             </Head>
-            <main className={styles.main}>
-                <div className={styles.dashboard}>
-                    <div className={styles.left}>
-                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                            <h3 className={styles.heading3}>Input management</h3>
+            <main className="p-6">
+                <div className="flex flex-col md:flex-row bg-white rounded-lg shadow-lg p-6">
+                    <div className="flex-1 pr-6">
+                        <div className="flex flex-col">
+                            <h3 className="text-xl font-semibold mb-4">Input management</h3>
                             {isClient && (
                                 <Collapsible trigger="Connect to server" style={{ marginBottom: 10, color: 'blue' }}>
                                     <QRCodeComponent serverUrl={serverUrl} />
                                 </Collapsible>
                             )}
                             <form>
-                                <div className={styles.formGroup}>
+                                <div className="mb-4">
                                     <input
                                         type="text"
                                         id="barcode"
@@ -92,47 +85,48 @@ export default function Dashboard({ ipAddress }) {
                                         onChange={e => setBarcodeValue(e.target.value)}
                                         placeholder='Barcode number'
                                         required
-                                        className={styles.input}
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                                     />
                                 </div>
-                                <div className={styles.formGroup}>
+                                <div className="mb-4">
                                     <input
                                         type="file"
                                         id="photo"
                                         name="photo"
                                         accept="image/*"
                                         required
-                                        className={styles.input}
+                                        className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
                                     />
                                 </div>
-                                <button type="submit" className={styles.button}>Submit</button>
+                                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Submit</button>
                             </form>
-                            <h3 className={styles.heading3}>Barcode tools</h3>
-                            <div style={{ alignContent: 'center' }}>
+                            <h3 className="text-xl font-semibold mt-8 mb-4">Barcode tools</h3>
+                            <div className="flex justify-center mb-2">
                                 <MyBarcode value={barcodeValue} />
                             </div>
-                            <b>Barcode info: {barcodeValue}</b>
+                            <b className="block mb-2">Barcode info: {barcodeValue}</b>
                             <button
-                                className={styles.button}
-                                style={{ marginBottom: '5px' }}
+                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-2"
                                 onClick={handleGenerateClick}
                             >
                                 Generate new one
                             </button>
-                            <button className={styles.button} onClick={handlePrintClick}>
+                            <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600" onClick={handlePrintClick}>
                                 Print
                             </button>
                         </div>
                     </div>
-                    <div className={styles.vertical_hr}></div>
-                    <div className={styles.right}>
-                        <h3 className={styles.heading3}>Search</h3>
+                    <div className="w-px bg-gray-300 mx-6"></div>
+                    <div className="flex-1 pl-6">
+                        <h3 className="text-xl font-semibold mb-4">Search</h3>
                         <form>
-                            <div style={{ display: 'block' }} className={styles.formGroup}>
-                                <label style={{ textAlign: 'center' }} htmlFor="searchterm">Look for any item using barcode number or product info</label>
-                                <div style={{ display: 'inline-flex' }}>
+                            <div className="mb-4">
+                                <label className="block text-center mb-2" htmlFor="searchterm">
+                                    Look for any item using barcode number or product info
+                                </label>
+                                <div className="flex">
                                     <input
-                                        style={{ marginRight: '10px' }}
+                                        className="flex-1 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300 mr-2"
                                         type="text"
                                         id="searchterm"
                                         name="searchterm"
@@ -140,18 +134,18 @@ export default function Dashboard({ ipAddress }) {
                                         onChange={e => setSearchterm(e.target.value)}
                                         placeholder='Search...'
                                         required
-                                        className={styles.input}
                                     />
-                                    <button type="submit" className={styles.button}><MdOutlineSearch /></button>
+                                    <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                                        <MdOutlineSearch />
+                                    </button>
                                 </div>
                             </div>
                         </form>
-
-                        <h3 className={styles.heading3}>Output management</h3>
-                        <div style={{ background: 'aqua' }}>Output management placeholder</div>
+                        <h3 className="text-xl font-semibold mt-8 mb-4">Output management</h3>
+                        <div className="bg-cyan-200 p-4 rounded">Output management placeholder</div>
                     </div>
                 </div>
-                <div className={styles.bottom}>
+                <div className="mt-8 text-center text-gray-600">
                     Welcome to picosorter.
                 </div>
             </main>
@@ -159,7 +153,6 @@ export default function Dashboard({ ipAddress }) {
     );
 }
 
-// to get ip address of the server computer in the local network.
 export async function getServerSideProps(context) {
     const os = require('os');
     const networkInterfaces = os.networkInterfaces();

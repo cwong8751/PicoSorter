@@ -3,18 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"node ./src/routes.js\"",
     "build": "next build",
-    "start": "concurrently \"node ./src/scanserver/server.js\" \"node ./src/routes.js\"",
+    "start": "NODE_ENV=production concurrently \"node ./src/scanserver/server.js\" \"node ./src/routes.js\"",
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
     "@zxing/library": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "client": "^0.0.1",
     "concurrently": "^8.2.2",
     "express": "^4.19.2",
+    "multer": "^2.0.2",
     "next": "14.2.4",
+    "postcss": "^8.5.6",
     "qrcode": "^1.5.3",
     "qrcode.react": "^3.1.0",
     "react": "^18",
@@ -25,6 +28,7 @@
     "socket.io-client": "^4.7.5",
     "sqlite": "^5.0.1",
     "sqlite3": "^5.1.6",
+    "tailwindcss": "^4.1.14",
     "websockets": "^0.2.0",
     "ws": "^8.17.1"
   },
